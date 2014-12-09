@@ -46,6 +46,9 @@ module.exports.Server = function(portnum) {
 		main.clients.forEach(function(client) {
 			client.send(msg);
 		});
+
+		delete msg;
+		delete data;
 	};
 
 	log.info('Server started');

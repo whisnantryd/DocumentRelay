@@ -3,6 +3,7 @@
 var log = require('../common/logger.js')('tcpsocket server');
 var EventEmitter = require('events').EventEmitter;
 var net = require('net');
+var Keepalive = require('./keepalive.js');
 
 module.exports.Server = function(port) {
 	log.info('Starting server...');
@@ -50,15 +51,24 @@ module.exports.Server = function(port) {
 		main.clients.forEach(function(client) {
 			client.write(msg);
 		});
+
+		delete msg;
+		delete data;
 	};
 
-	main.server.on('error', function(err) {});
+	main.server.on('error', function(err) { delete err; });
 	
 	main.server.on('close', function() {
 		setTimeout(main.create, 5000);
 	});
 
 	main.create();
+
+	setInterval(function() {
+		var ka = new Keepalive();
+		main.broadcast(ka);
+		delete ka;
+	}, 998);
 
 	log.info('Server started');
 

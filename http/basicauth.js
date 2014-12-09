@@ -1,6 +1,6 @@
 // basicauth.js
 
-module.exports = function(req) {
+module.exports.user = function(req) {
 	req = req.req || req;
 
 	var auth = req.headers.authorization;
@@ -10,8 +10,7 @@ module.exports = function(req) {
 	// malformed
 	var parts = auth.split(' ');
 
-	if ('basic' != parts[0].toLowerCase()) return;
-	if (!parts[1]) return;
+	if ('basic' != parts[0].toLowerCase() || !parts[1]) return;
 
 	auth = parts[1];
 
