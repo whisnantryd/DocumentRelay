@@ -16,4 +16,4 @@ Documents pushed to the server must be in the format
         }
 
 ###Authentication
-Authentication for the endpoints is handled by requireing a basic auth header on the put and get requests. Mongodb is used to store users including roles and specific endpoint permits.
+Authentication for the endpoints is handled by requiring a basic auth header on the put and get requests. Mongodb is used to store users including roles and specific endpoint permits.
