@@ -10,6 +10,7 @@
   "dependencies": {
     "express": "^4.10.4",
     "body-parser" : "latest",
-    "ws": "0.6.2"
+    "ws": "0.6.2",
+    "mongodb" : "latest"
   }
 }

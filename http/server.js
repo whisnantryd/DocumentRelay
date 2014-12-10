@@ -4,7 +4,7 @@ var log = require('../common/logger.js')('http server');
 var EventEmitter = require('events').EventEmitter;
 var express = require('express');
 var bodyParser = require('body-parser');
-var gatekeeper = require('./gatekeeper.js');
+var gatekeeper = require('./gatekeeper/gatekeeper.js');
 var users = require('../private/users.js');
 
 module.exports.Server = function(port) {
@@ -14,37 +14,26 @@ module.exports.Server = function(port) {
 
 	main.app = express();
 	main.app.use(bodyParser.json());
+	main.app.get('/favicon.ico', function(req, res) { res.send(); });
 
 	main.app.get('/:datatype', gatekeeper.frisk(null), function(req, res) {
 		var reqtype = req.params.datatype;
 
-		if(reqtype == 'favicon.ico') {
-			// send the icon
-			res.status = 200;
-			res.end();
+		if(!reqtype || cache[reqtype] == null) {
+			res.status = 404;
+			res.send({ status : 'endpoint not found' });
 		} else {
-			if(!reqtype || cache[reqtype] == null) {
-				res.status = 404;
-				res.send('invalid request');
-			} else {
-				res.status = 200;
-				res.send(cache[reqtype]);
-			}
+			res.status = 200;
+			res.send(cache[reqtype]);
 		}
 	});
 
 	main.app.put('/:datatype', gatekeeper.frisk('admin'), function(req, res) {
 		var reqtype = req.params.datatype;
 
-		if(reqtype == 'favicon.ico') {
-			// send the icon
-			res.status = 200;
-			res.end();
-		} else {
-			main.emit('data', req.user, req.body)
-			res.writeHead(200, "ok");
-			res.send();
-		}
+		main.emit('data', req.user, req.body)
+		res.writeHead(200, 'ok');
+		res.send();
 	});
 
 	main.process = function(data) {
