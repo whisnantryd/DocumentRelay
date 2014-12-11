@@ -1,12 +1,15 @@
 // db.js
 
 var log = require('../../common/logger.js')('database');
+var config = require('../../private/config.js').db;
 var mongodb = require('mongodb');
 var mongclient = mongodb.MongoClient;
 
-mongclient.connect('mongodb://54.164.72.199:27017/docrelay', function(err, db) {
+log.info('Connecting to ' + config.host + '...');
+
+mongclient.connect(config.connectionString(), function(err, db) {
 	if(err) {
-		log.error('not connected');
+		log.error('Connect failed' + (err ? ', ' + err : ''));
 		return;
 	}
 

@@ -1,6 +1,6 @@
 // server.js
 
-var log = require('../common/logger.js')('websocket server');
+var log = require('../common/logger.js')('websocket');
 var EventEmitter = require('events').EventEmitter;
 var WebSocketServer = require('ws').Server;
 

@@ -1,11 +1,10 @@
 // server.js
 
-var log = require('../common/logger.js')('http server');
+var log = require('../common/logger.js')('http');
 var EventEmitter = require('events').EventEmitter;
 var express = require('express');
 var bodyParser = require('body-parser');
 var gatekeeper = require('./gatekeeper/gatekeeper.js');
-var users = require('../private/users.js');
 
 module.exports.Server = function(port) {
 	log.info('Starting server...');

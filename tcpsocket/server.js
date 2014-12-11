@@ -1,6 +1,6 @@
 // server.js
 
-var log = require('../common/logger.js')('tcpsocket server');
+var log = require('../common/logger.js')('tcpsocket');
 var EventEmitter = require('events').EventEmitter;
 var net = require('net');
 var Keepalive = require('./keepalive.js');

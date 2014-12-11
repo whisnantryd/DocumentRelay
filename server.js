@@ -13,16 +13,13 @@ broadcast = function(data) {
 }
 
 tcpserver.on('data', function(client, data) {
-	//console.log(data.toString());
 	broadcast(data);
 });
 
 wsserver.on('data', function(client, data) {
-	//console.log(data.toString());
 	broadcast(data);
 });
 
 httpserver.on('data', function(client, data) {
-	//console.log(data.toString());
 	broadcast(data);
 });
