@@ -1,8 +1,6 @@
 // logger.js
 var BLOCK = 22;
 
-
-
 module.exports = function(module) {
 	if(module.length > BLOCK) {
 	    module = module.substring(0, BLOCK - 4) + "...";
