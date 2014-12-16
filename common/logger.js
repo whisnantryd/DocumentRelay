@@ -1,9 +1,9 @@
 // logger.js
 var BLOCK = 22;
 
-module.exports = function(module) {
-	if(module.length > BLOCK) {
-	    module = module.substring(0, BLOCK - 4) + "...";
+module.exports = function(logname) {
+	if(logname.length > BLOCK) {
+	    logname = logname.substring(0, BLOCK - 4) + "...";
 	}
 
 	var color = {
@@ -15,19 +15,19 @@ module.exports = function(module) {
 
 	var header = function(type) {
 		return new Date().toISOString().replace(/[T]|[Z]/g, ' ') + ' [' + 
-			module + Array(BLOCK - (module.length + type.length)).join("-") + 
+			logname + Array(BLOCK - (logname.length + type.length)).join("-") + 
 			type + color.grey + '] : ';
 	};
 
 	return {
 		info : function(data) {
-			console.log(header(color.green + 'info') + color.grey + data);
+			console.log(header(color.green + 'info') + data);
 		},
 		warn : function(data) {
-			console.log(header(color.yellow + 'warn') + color.grey + data);
+			console.log(header(color.yellow + 'warn') + data);
 		},
 		error : function(data) {
-			console.log(header(color.red + 'err') + color.grey + data);
+			console.log(header(color.red + 'err') + data);
 		}
 	};
 };
