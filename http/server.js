@@ -13,9 +13,9 @@ module.exports.Server = function(port) {
 
 	main.app = express();
 	main.app.use(bodyParser.json());
-	main.app.get('/favicon.ico', function(req, res) { res.send(); });
+	main.app.get(['/favicon.ico', '/:path/favicon.ico'], function(req, res) { res.send(); });
 
-	main.app.get('/:datatype', gatekeeper.frisk(null), function(req, res) {
+	main.app.get('/:path/:datatype', gatekeeper.frisk(null), function(req, res) {
 		var reqtype = req.params.datatype;
 
 		if(!reqtype || cache[reqtype] == null) {
@@ -27,9 +27,7 @@ module.exports.Server = function(port) {
 		}
 	});
 
-	main.app.put('/:datatype', gatekeeper.frisk('admin'), function(req, res) {
-		var reqtype = req.params.datatype;
-
+	main.app.put('/:path/:datatype', gatekeeper.frisk('admin'), function(req, res) {
 		main.emit('data', req.user, req.body)
 		res.writeHead(200, 'ok');
 		res.send();

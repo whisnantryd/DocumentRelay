@@ -73,6 +73,7 @@ module.exports.frisk = function(authtype) {
 		if(!user || user == undefined) {
 			return deny(res, null, headers.noauth);
 		} else {
+			user.authrequest = authtype;
 			req.user = user;
 			authenticate(req, res, next);
 		}
