@@ -7,7 +7,6 @@ var httpserver = require('./http/server.js').Server(8002);
 broadcast = function(data) {
 	tcpserver.broadcast(data);
 	wsserver.broadcast(data);
-	httpserver.process(data);
 
 	delete data;
 }
