@@ -29,4 +29,4 @@ node_modules
 
 # Private data, not intended for use in production
 private
-*_dev
+*_dev*

@@ -8,12 +8,6 @@ Array.prototype.allow = function(datatype) {
 	return (this.indexOf(datatype) + this.indexOf('*')) > -2;
 };
 
-var status = function(msg) {
-	return {
-		status : msg
-	};
-}
-
 var deny = function(res, msg, setheader) {
 	res.setHeader("Content-Type", "application/json");
 	setheader(res);
@@ -28,7 +22,7 @@ var deny = function(res, msg, setheader) {
 var headers = {
 	noauth : function(res) {
 		res.statusCode = 401;
-		res.setHeader("WWW-Authenticate", "Basic realm='DocumentRelay.gatekeeper'");
+		res.setHeader("WWW-Authenticate", "Basic realm='Document Relay'");
 	},
 	nopermit : function(res) {
 		res.statusCode = 403;
@@ -46,7 +40,7 @@ module.exports.frisk = function(authtype) {
 			if(authuser) {
 				switch(authuser.length) {
 					case 0 :
-						deny(res, status('access denied'), headers.noauth);
+						deny(res, { status : 'access denied' }, headers.noauth);
 						break;
 					case 1 :
 						authuser = authuser[0];
@@ -56,15 +50,15 @@ module.exports.frisk = function(authtype) {
 								req.user = authuser;
 								return next();
 							} else {
-								deny(res, status('access denied, permitted paths = ' + JSON.stringify(root) + '/' + JSON.stringify(permit)), headers.nopermit);
+								deny(res, { status : 'access denied, permitted paths = ' + JSON.stringify(root) + '/' + JSON.stringify(permit) }, headers.nopermit);
 							}
 						} else {
-							deny(res, status('access denied, inadequate account level'), headers.noauth)
+							deny(res, { status : 'access denied, inadequate account level' }, headers.noauth)
 						}
 						
 						break;
 					default :
-						deny(res, status('returned more than one entity, please contact admin'), headers.noauth);
+						deny(res, { status : 'returned more than one entity, please contact admin' }, headers.noauth);
 						break;
 				}
 			}
