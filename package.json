@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "express": "^4.10.4",
-    "body-parser" : "latest",
+    "body-parser" : "1.10.0",
     "ws": "0.6.2",
     "mongodb" : "latest"
   }

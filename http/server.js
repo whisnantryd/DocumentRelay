@@ -5,6 +5,7 @@ var EventEmitter = require('events').EventEmitter;
 var express = require('express');
 var bodyParser = require('body-parser');
 var gatekeeper = require('./gatekeeper/gatekeeper.js');
+var util = require('../common/utility.js');
 
 module.exports.Server = function(port) {
 	log.info('Starting server...');
@@ -51,7 +52,8 @@ module.exports.Server = function(port) {
 
 		pathcache[req.params.datatype] = req.body;
 
-		log.info('Update cache for [' + req.params.path + '/' + req.params.datatype + ', user : ' + req.user.login + ']');
+		//log.info('Update cache for [' + req.params.path + '/' + req.params.datatype + ', user : ' + req.user.login + '] -> ' + JSON.stringify(req.body));
+		log.info('Update cache [path: {0}/{1}, user: {2}]'.format(req.params.path, req.params.datatype, req.user.login));
 
 		res.writeHead(200, 'ok');
 		res.send();

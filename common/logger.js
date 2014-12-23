@@ -1,5 +1,5 @@
 // logger.js
-var BLOCK = 20;
+var BLOCK = 32;
 
 module.exports = function(logname, onwrite) {
 	if(logname.length > BLOCK) {
@@ -24,9 +24,16 @@ module.exports = function(logname, onwrite) {
 	};
 
 	var header = function(type) {
+		var len = logname.length + type.length;
+
+		if(len > BLOCK - 1) {
+			logname = logname.slice(0, (BLOCK -1) - len);
+			len = logname.length + type.length;
+		}
+
 		var ret = new Date().toISOString().replace(/[T]|[Z]/g, ' ') + '[' + 
-			logname + Array(BLOCK - (logname.length + type.length)).join("-") + 
-			type + '] : ';0
+			logname + Array((BLOCK + 1) - len).join("-") +
+			type + '] : ';
 
 		return ret;
 	};
