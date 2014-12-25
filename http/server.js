@@ -11,12 +11,12 @@ module.exports.Server = function(port) {
 	log.info('Starting server...');
 
 	var main = new EventEmitter();
+	var app = express();
 
-	main.app = express();
-	main.app.use(bodyParser.json());
-	main.app.get(['/favicon.ico', '/:path/favicon.ico'], function(req, res) { res.send(); });
+	app.use(bodyParser.json());
+	app.get(['/favicon.ico', '/:path/favicon.ico'], function(req, res) { res.send(); });
 
-	main.app.get('/:path', gatekeeper.frisk(null), function(req, res) {
+	app.get('/:path', gatekeeper.frisk(null), function(req, res) {
 		var path = req.params.path;
 
 		if(!path || cache[path] == null) {
@@ -28,7 +28,7 @@ module.exports.Server = function(port) {
 		}
 	})
 
-	main.app.get('/:path/:datatype', gatekeeper.frisk(null), function(req, res) {
+	app.get('/:path/:datatype', gatekeeper.frisk(null), function(req, res) {
 		var path = req.params.path;
 		var datatype = req.params.datatype;
 
@@ -41,7 +41,7 @@ module.exports.Server = function(port) {
 		}
 	});
 
-	main.app.put('/:path/:datatype', gatekeeper.frisk('admin'), function(req, res) {
+	app.put('/:path/:datatype', gatekeeper.frisk('admin'), function(req, res) {
 		main.emit('data', req.user, req.body);
 
 		var pathcache = cache[req.params.path];
@@ -52,14 +52,13 @@ module.exports.Server = function(port) {
 
 		pathcache[req.params.datatype] = req.body;
 
-		//log.info('Update cache for [' + req.params.path + '/' + req.params.datatype + ', user : ' + req.user.login + '] -> ' + JSON.stringify(req.body));
 		log.info('Update cache [path: {0}/{1}, user: {2}]'.format(req.params.path, req.params.datatype, req.user.login));
 
 		res.writeHead(200, 'ok');
 		res.send();
 	});
 
-	main.app.listen(port);
+	app.listen(port);
 
 	log.info('Server started');
 

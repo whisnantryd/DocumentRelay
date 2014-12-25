@@ -50,7 +50,10 @@ module.exports.frisk = function(authtype) {
 								req.user = authuser;
 								return next();
 							} else {
-								deny(res, { status : 'access denied, permitted paths = ' + JSON.stringify(root) + '/' + JSON.stringify(permit) }, headers.nopermit);
+								deny(res, { 
+									status : 'access denied',
+									user : authuser
+								}, headers.nopermit);
 							}
 						} else {
 							deny(res, { status : 'access denied, inadequate account level' }, headers.noauth)
